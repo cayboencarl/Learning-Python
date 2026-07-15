@@ -1,0 +1,17 @@
+TakeAways:
+1. Return valaue is reusable and can be called inside a function, but print is not.
+2. Function stops immediately after return.
+Example:
+def calculate_this(num1, num2):
+  calculated = num1 + num2
+  return calculated #returns the calculated num1 and num2
+
+equals = calculate_this( 5, 3)
+print(equals)
+
+you can call funtion through f{name}
+Example: 
+print(f"the calculated total of num1 and num2 is {equals}")
+------------------------------------------------------------------------------------------------
+username = username #declaring of value
+username == username #comparing value
