@@ -1,0 +1,152 @@
+1. -----------------------------------------------------------------------------------------------------
+OOP
+ -Used for organizing Objects
+Example:
+Real world: A car
+├─ Properties (data): color, brand, fuel
+└─ Actions (methods): start(), stop(), accelerate()
+
+OOP in code:
+class Car:
+    ├─ color = "red"        (property)
+    ├─ brand = "Toyota"     (property)
+    └─ start()              (method)
+2. -----------------------------------------------------------------------------------------------------
+CLASSES
+ -Used for creating an object
+Example:
+class Task:
+    def __init__(self, name, description):
+        self.name = name
+        self.description = description
+        self.is_complete = False
+Object: 
+task1 = Task("Study Python", "Learn OOP")
+task2 = Task("Build API", "Create REST endpoints")
+task3 = Task("Debug code", "Fix bugs")
+
+Class Structure:
+class Task:
+    # Constructor (runs when object is created)
+    def __init__(self, name, description):
+        self.name = name
+        self.description = description
+        self.is_complete = False
+    
+    # Method (function inside class)
+    def mark_complete(self):
+        self.is_complete = True
+    
+    # Method
+    def get_info(self):
+        return f"{self.name}: {self.description}"
+
+How to use Class:
+# Create objects
+task1 = Task("Study Python", "Learn basics")
+task2 = Task("Build API", "Create endpoints")
+
+# Access properties
+print(task1.name)  # Study Python
+print(task2.is_complete)  # False
+
+# Call methods
+task1.mark_complete()
+print(task1.is_complete)  # True
+
+# Call methods that return
+info = task1.get_info()
+print(info)  # Study Python: Learn basics
+3. ---------------------------------------------------------------------------------------------------------
+SELF
+
+class Task:
+    def __init__(self, name):
+        self.name = name  # ← self = THIS specific task
+    
+    def show(self):
+        print(f"Task: {self.name}")  # ← self = THIS specific task
+
+# Create two objects
+task1 = Task("Study")
+task2 = Task("Build")
+
+task1.show()  # Prints: Task: Study (self = task1)
+task2.show()  # Prints: Task: Build (self = task2)
+4. ---------------------------------------------------------------------------------------------------------
+PROPERTIES(DATA)
+
+__init__
+
+class User:
+    def __init__(self, username, email, age):
+        self.username = username  # Property 1
+        self.email = email        # Property 2
+        self.age = age            # Property 3
+
+# Create object
+user = User("carl", "carl@example.com", 18)
+
+# Access properties
+print(user.username)  # carl
+print(user.age)       # 18
+
+# Modify properties
+user.age = 19
+print(user.age)       # 19
+5. ---------------------------------------------------------------------------------------------------------
+METHODS
+
+A. Methods that don't return anything
+class Task:
+    def __init__(self, name):
+        self.name = name
+        self.is_complete = False
+    
+    def mark_complete(self):
+        self.is_complete = True
+        print(f"'{self.name}' is now complete!")
+
+task = Task("Study Python")
+task.mark_complete()  # Output: 'Study Python' is now complete!
+
+B. Methods that return values
+class User:
+    def __init__(self, first_name, last_name):
+        self.first_name = first_name
+        self.last_name = last_name
+    
+    def get_full_name(self):
+        return f"{self.first_name} {self.last_name}"
+    
+    def get_email(self):
+        return f"{self.first_name.lower()}.{self.last_name.lower()}@example.com"
+
+user = User("Carl", "Developer")
+print(user.get_full_name())  # Carl Developer
+print(user.get_email())      # carl.developer@example.com
+
+C. Methods that do calculations
+class Bank:
+    def __init__(self, account_holder, balance):
+        self.account_holder = account_holder
+        self.balance = balance
+    
+    def deposit(self, amount):
+        self.balance += amount
+        return f"Deposited ${amount}. New balance: ${self.balance}"
+    
+    def withdraw(self, amount):
+        if amount > self.balance:
+            return "Insufficient funds!"
+        self.balance -= amount
+        return f"Withdrew ${amount}. New balance: ${self.balance}"
+    
+    def get_balance(self):
+        return self.balance
+
+# Usage
+account = Bank("Carl", 1000)
+print(account.deposit(500))      # Deposited $500. New balance: $1500
+print(account.withdraw(200))     # Withdrew $200. New balance: $1300
+print(account.get_balance())     # 1300
