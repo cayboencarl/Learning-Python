@@ -76,13 +76,17 @@ task2.show()  # Prints: Task: Build (self = task2)
 4. ---------------------------------------------------------------------------------------------------------
 PROPERTIES(DATA)
 
-__init__
+Parameters let you receive data when creating an object.
+self properties let you store that data on the object.
+
+__init__(Parameters) #Temporary during object creation
+
 
 class User:
     def __init__(self, username, email, age):
-        self.username = username  # Property 1
-        self.email = email        # Property 2
-        self.age = age            # Property 3
+        self.username = username  # Property 1 |
+        self.email = email        # Property 2 | These creates permanent property, saves it to the object
+        self.age = age            # Property 3 |
 
 # Create object
 user = User("carl", "carl@example.com", 18)
