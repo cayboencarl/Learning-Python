@@ -1,0 +1,254 @@
+HTTP = HyperText Transfer Protocol (a language used by client and server to communicate)
+  Stateless - each request is independent
+    Request-Response - client asks, server answers
+      Standard format - everyone uses same rules
+
+HTTP Methods (Verbs)
+==================================================================================================================GET
+GET - "Give me data"
+  Client: "GET /api/tasks"
+    Meaning: "Show me all tasks"
+      Server responds: List of all tasks
+
+Real example:
+javascript
+  fetch('http://localhost:5000/api/tasks', {
+    method: 'GET'  // ← GET method
+})
+==================================================================================================================POST
+POST - "Create new data"
+  Client: "POST /api/tasks"
+    Body: {name: "Study Python", description: "Learn OOP"}
+      Meaning: "Create a new task with this data"
+
+Server responds: The newly created task
+
+Real example:
+  javascript
+    fetch('http://localhost:5000/api/tasks', {
+      method: 'POST',  // ← POST method
+       body: JSON.stringify({
+        name: "Study Python",
+          description: "Learn OOP"
+    })
+})
+==================================================================================================================PUT
+PUT - "Replace entire data"
+  Client: "PUT /api/tasks/1"
+    Body: {name: "NEW NAME", description: "NEW DESC"}
+      Meaning: "Replace task #1 with this new data"
+        Server responds: Updated task
+==================================================================================================================PATCH
+PATCH - "Update partial data"
+  Client: "PATCH /api/tasks/1"
+    Body: {is_complete: true}
+      Meaning: "Update only the is_complete field of task #1"
+        Server responds: Updated task
+==================================================================================================================DELETE
+DELETE - "Remove data"
+  Client: "DELETE /api/tasks/1"
+    Meaning: "Delete task #1"
+      Server responds: "Task deleted"
+==================================================================================================================STATUS CODES
+HTTP Status Codes
+200 Series - Success 
+  200 OK - Request successful, here's the data
+    201 Created - Request successful, new resource created
+      204 No Content - Request successful, no data to return
+        400 Series - Client Error 
+          400 Bad Request - You sent bad data
+            401 Unauthorized - You need to login
+              403 Forbidden - You don't have permission
+                404 Not Found - Resource doesn't exist
+                  500 Series - Server Error 
+                    500 Internal Server Error - Server messed up
+                      503 Service Unavailable - Server is down
+
+Real example:
+
+javascript
+  fetch('http://localhost:5000/api/tasks')
+    .then(response => {
+        if (response.status === 200) {
+            console.log("Success!");
+        } else if (response.status === 404) {
+            console.log("Task not found!");
+        } else if (response.status === 500) {
+            console.log("Server error!");
+        }
+    })
+==================================================================================================================HTTP REQUEST STRUCTURE
+HTTP Request Structure
+  Every HTTP request has this structure:
+
+REQUEST LINE:  GET /api/tasks HTTP/1.1
+  HEADERS:       Host: localhost:5000
+               Content-Type: application/json
+               Authorization: Bearer token123
+BLANK LINE:
+BODY:          {"name": "Study Python"}
+Breaking It Down
+---------------------------------------------------
+Request Line:
+GET /api/tasks HTTP/1.1
+├─ GET = HTTP method
+├─ /api/tasks = endpoint (path)
+└─ HTTP/1.1 = protocol version
+
+Headers:
+Host: localhost:5000              ← Where server is
+Content-Type: application/json    ← Data format
+Authorization: Bearer token123    ← Authentication token
+
+Body:
+{"name": "Study Python", "description": "Learn basics"}
+==================================================================================================================HTTP RESPONSE STRUCTURE
+HTTP Response Structure
+Server sends back:
+
+STATUS LINE:   HTTP/1.1 201 Created
+HEADERS:       Content-Type: application/json
+               Content-Length: 125
+BLANK LINE:
+BODY:          {"id": 1, "name": "Study Python", "is_complete": false}
+Breaking It Down
+
+Status Line:
+
+HTTP/1.1 201 Created
+├─ HTTP/1.1 = protocol
+├─ 201 = status code
+└─ Created = status message
+
+Headers:
+
+Content-Type: application/json    ← Data format of body
+Content-Length: 125               ← Size of body
+
+Body:
+
+{"id": 1, "name": "Study Python", "is_complete": false}
+==================================================================================================================URLs & END POINTS
+URLs & Endpoints
+https://localhost:5000/api/tasks/1
+├─ https:// = protocol (secure)
+├─ localhost = domain/server address
+├─ :5000 = port number
+├─ /api/tasks/1 = endpoint (path)
+└─ /1 = specific resource ID
+Endpoint Patterns
+GET    /api/tasks              ← Get all tasks
+POST   /api/tasks              ← Create new task
+PUT    /api/tasks/1            ← Update task #1
+PATCH  /api/tasks/1/complete   ← Mark task #1 complete
+DELETE /api/tasks/1            ← Delete task #1
+
+Same /api/tasks with different methods = different actions
+Adding /1 makes it specific to that task
+Adding /complete makes it a specific action
+==================================================================================================================JSON
+JSON = JavaScript Object Notation
+It's the standard format for sending data over HTTP.
+JSON STRUCTURE
+{
+  "username": "carl",
+  "age": 18,
+  "is_admin": false,
+  "tasks": [
+    {"id": 1, "name": "Study Python"},
+    {"id": 2, "name": "Build API"}
+  ]
+}
+==================================================================================================================COMMUNICATION OF BACKEND AND FRONTEND
+How Frontend and Backend Communicate
+
+Frontend (Your Browser)
+    ↓
+    HTTP Request (asks backend for something)
+    ↓
+Backend (Flask Server)
+    ↓
+    HTTP Response (sends answer back)
+    ↓
+Frontend (receives and displays)
+
+A client is anything that requests something.
+Examples:
+- Your web browser
+- Your phone app
+- Your computer
+- Anyone using your app
+
+What is a Server?
+A server is anything that provides something.
+Examples:
+- Flask app running on localhost:5000
+- Google's servers
+- Facebook's servers
+- Any app serving data
+
+How they Communicate
+Client: "Hey server, give me all tasks"
+    ↓ (HTTP Request)
+Server receives request
+Server: "Here are your tasks"
+    ↓ (HTTP Response)
+Client receives response and displays it
+==================================================================================================================EXAMPLE
+Step 1: User Types Credentials
+
+Browser shows login form
+User enters: username="carl", password="secret"
+User clicks: Login button
+----------------------------------------------------
+Step 2: Frontend Makes HTTP Request
+javascript
+fetch('http://localhost:5000/api/login', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+        username: "carl",
+        password: "secret"
+    })
+})
+----------------------------------------------------
+Step 3: HTTP Request Sent
+POST /api/login HTTP/1.1
+Host: localhost:5000
+Content-Type: application/json
+Content-Length: 45
+
+{"username":"carl","password":"secret"}
+----------------------------------------------------
+Step 4: Backend Receives & Processes
+python
+@app.route('/api/login', methods=['POST'])
+def login():
+    data = request.get_json()  # Gets the JSON body
+    username = data.get('username')  # "carl"
+    password = data.get('password')  # "secret"
+    
+    # Check if valid
+    if username == "carl" and password == "secret":
+        token = "abc123xyz"
+        return jsonify({"token": token}), 200
+    else:
+        return jsonify({"error": "Wrong credentials"}), 401
+----------------------------------------------------
+Step 5: HTTP Response Sent Back
+HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Length: 25
+
+{"token":"abc123xyz"}
+----------------------------------------------------
+Step 6: Frontend Receives Response
+javascript
+.then(response => response.json())
+.then(data => {
+    console.log(data.token)  // "abc123xyz"
+    localStorage.setItem('token', data.token)
+    window.location.href = 'index.html'
+})
